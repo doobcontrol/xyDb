@@ -1,0 +1,19 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net6.0-windows</TargetFramework>
+    <Nullable>enable</Nullable>
+    <UseWindowsForms>true</UseWindowsForms>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\com.xiyuansoft.DataBasePro.SQLite64\com.xiyuansoft.DataBasePro.SQLite64.csproj" />
+    <ProjectReference Include="..\com.xiyuansoft.DataBasePro.SQLite\com.xiyuansoft.DataBasePro.SQLite.csproj" />
+    <ProjectReference Include="..\com.xiyuansoft.DataBasePro.SqlServer\com.xiyuansoft.DataBasePro.SqlServer.csproj" />
+    <ProjectReference Include="..\com.xiyuansoft.DataBasePro\com.xiyuansoft.DataBasePro.csproj" />
+    <ProjectReference Include="..\com.xiyuansoft.DataBaseUpdate\com.xiyuansoft.DataBaseUpdate.csproj" />
+  </ItemGroup>
+
+</Project>
