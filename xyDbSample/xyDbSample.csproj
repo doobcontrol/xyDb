@@ -13,7 +13,6 @@
     <ProjectReference Include="..\com.xiyuansoft.DataBasePro.SQLite\com.xiyuansoft.DataBasePro.SQLite.csproj" />
     <ProjectReference Include="..\com.xiyuansoft.DataBasePro.SqlServer\com.xiyuansoft.DataBasePro.SqlServer.csproj" />
     <ProjectReference Include="..\com.xiyuansoft.DataBasePro\com.xiyuansoft.DataBasePro.csproj" />
-    <ProjectReference Include="..\com.xiyuansoft.DataBaseUpdate\com.xiyuansoft.DataBaseUpdate.csproj" />
   </ItemGroup>
 
 </Project>
