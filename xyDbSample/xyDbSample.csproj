@@ -2,17 +2,15 @@
 
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
-    <TargetFramework>net6.0-windows</TargetFramework>
+    <TargetFramework>net8.0-windows7.0</TargetFramework>
     <Nullable>enable</Nullable>
     <UseWindowsForms>true</UseWindowsForms>
     <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\com.xiyuansoft.DataBasePro.SQLite64\com.xiyuansoft.DataBasePro.SQLite64.csproj" />
-    <ProjectReference Include="..\com.xiyuansoft.DataBasePro.SQLite\com.xiyuansoft.DataBasePro.SQLite.csproj" />
-    <ProjectReference Include="..\com.xiyuansoft.DataBasePro.SqlServer\com.xiyuansoft.DataBasePro.SqlServer.csproj" />
-    <ProjectReference Include="..\com.xiyuansoft.DataBasePro\com.xiyuansoft.DataBasePro.csproj" />
+    <ProjectReference Include="..\xy.Db.SQLite64\xy.Db.SQLite64.csproj" />
+    <ProjectReference Include="..\xy.Db\xy.Db.csproj" />
   </ItemGroup>
 
 </Project>
