@@ -28,76 +28,54 @@
         /// </summary>
         private void InitializeComponent()
         {
-            button1 = new Button();
-            textBox1 = new TextBox();
             panel1 = new Panel();
-            panel2 = new Panel();
+            btnAdd = new Button();
             dataGridView1 = new DataGridView();
-            button2 = new Button();
+            btnDelete = new Button();
             panel1.SuspendLayout();
-            panel2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)dataGridView1).BeginInit();
             SuspendLayout();
             // 
-            // button1
-            // 
-            button1.Location = new Point(12, 12);
-            button1.Name = "button1";
-            button1.Size = new Size(94, 29);
-            button1.TabIndex = 0;
-            button1.Text = "button1";
-            button1.UseVisualStyleBackColor = true;
-            button1.Click += button1_Click;
-            // 
-            // textBox1
-            // 
-            textBox1.Dock = DockStyle.Fill;
-            textBox1.Location = new Point(0, 331);
-            textBox1.Multiline = true;
-            textBox1.Name = "textBox1";
-            textBox1.ScrollBars = ScrollBars.Vertical;
-            textBox1.Size = new Size(170, 119);
-            textBox1.TabIndex = 1;
-            // 
             // panel1
             // 
-            panel1.Controls.Add(textBox1);
-            panel1.Controls.Add(panel2);
+            panel1.Controls.Add(btnDelete);
+            panel1.Controls.Add(btnAdd);
             panel1.Dock = DockStyle.Left;
             panel1.Location = new Point(0, 0);
             panel1.Name = "panel1";
-            panel1.Size = new Size(170, 450);
+            panel1.Size = new Size(135, 450);
             panel1.TabIndex = 2;
             // 
-            // panel2
+            // btnAdd
             // 
-            panel2.Controls.Add(button2);
-            panel2.Controls.Add(button1);
-            panel2.Dock = DockStyle.Top;
-            panel2.Location = new Point(0, 0);
-            panel2.Name = "panel2";
-            panel2.Size = new Size(170, 331);
-            panel2.TabIndex = 3;
+            btnAdd.Location = new Point(12, 12);
+            btnAdd.Name = "btnAdd";
+            btnAdd.Size = new Size(94, 29);
+            btnAdd.TabIndex = 2;
+            btnAdd.Text = "Add";
+            btnAdd.UseVisualStyleBackColor = true;
+            btnAdd.Click += btnAdd_Click;
             // 
             // dataGridView1
             // 
             dataGridView1.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             dataGridView1.Dock = DockStyle.Fill;
-            dataGridView1.Location = new Point(170, 0);
+            dataGridView1.Location = new Point(135, 0);
             dataGridView1.Name = "dataGridView1";
             dataGridView1.RowHeadersWidth = 51;
-            dataGridView1.Size = new Size(630, 450);
+            dataGridView1.Size = new Size(665, 450);
             dataGridView1.TabIndex = 3;
+            dataGridView1.CellValueChanged += dataGridView1_CellValueChanged;
             // 
-            // button2
+            // btnDelete
             // 
-            button2.Location = new Point(12, 47);
-            button2.Name = "button2";
-            button2.Size = new Size(94, 29);
-            button2.TabIndex = 1;
-            button2.Text = "button2";
-            button2.UseVisualStyleBackColor = true;
-            button2.Click += button2_Click;
+            btnDelete.Location = new Point(12, 47);
+            btnDelete.Name = "btnDelete";
+            btnDelete.Size = new Size(94, 29);
+            btnDelete.TabIndex = 3;
+            btnDelete.Text = "Delete";
+            btnDelete.UseVisualStyleBackColor = true;
+            btnDelete.Click += btnDelete_Click;
             // 
             // Form1
             // 
@@ -108,20 +86,16 @@
             Controls.Add(panel1);
             Name = "Form1";
             Text = "Form1";
+            Load += Form1_Load;
             panel1.ResumeLayout(false);
-            panel1.PerformLayout();
-            panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)dataGridView1).EndInit();
             ResumeLayout(false);
         }
 
         #endregion
-
-        private Button button1;
-        private TextBox textBox1;
         private Panel panel1;
-        private Panel panel2;
         private DataGridView dataGridView1;
-        private Button button2;
+        private Button btnAdd;
+        private Button btnDelete;
     }
 }

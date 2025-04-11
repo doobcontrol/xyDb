@@ -25,7 +25,6 @@ namespace xyDbSample
         private DbService dbService;
         public DbService DbService { get => dbService; set => dbService = value; }
 
-
         public string DbType
         {
             get

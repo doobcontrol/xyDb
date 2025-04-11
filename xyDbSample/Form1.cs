@@ -1,4 +1,5 @@
 using System.Data;
+using System.Data.Entity.Core.Common.CommandTrees.ExpressionBuilder;
 using xy.Db;
 using xy.Db.PostgreSQL;
 using xy.Db.SQLite64;
@@ -11,15 +12,21 @@ namespace xyDbSample
         public Form1(DbService DbService)
         {
             InitializeComponent();
+            dataGridView1.AllowUserToAddRows = false;
 
             dbService = DbService;
-
-            loadeData();
         }
-        private void loadeData()
+
+        private async void Form1_Load(object sender, EventArgs e)
         {
-            string sql = "SELECT * FROM COMPANY";
-            var dt = dbService.exeSqlForDataSetAsync(sql);
+            await loadeDataAsync();
+        }
+
+        int maxId = 0;
+        private async Task loadeDataAsync()
+        {
+            string sql = "SELECT * FROM COMPANY ORDER BY ID";
+            DataTable dt = await dbService.exeSqlForDataSetAsync(sql);
             if (dt != null)
             {
                 dataGridView1.Columns.Clear();
@@ -29,39 +36,59 @@ namespace xyDbSample
                 dataGridView1.Columns.Add("AGE", "AGE");
                 dataGridView1.Columns.Add("ADDRESS", "ADDRESS");
                 dataGridView1.Columns.Add("SALARY", "SALARY");
-                foreach (DataRow row in dt.Result.Rows)
+                dataGridView1.Columns["ID"].ReadOnly = true;
+
+                foreach (DataRow row in dt.Rows)
                 {
-                    dataGridView1.Rows.Add(row.ItemArray);
+                    int i = dataGridView1.Rows.Add(row.ItemArray);
+                    dataGridView1.Rows[i].Tag = row;
+                    if (Convert.ToInt32(row["ID"]) > maxId)
+                    {
+                        maxId = Convert.ToInt32(row["ID"]);
+                    }
                 }
             }
         }
 
-        private void button1_Click(object sender, EventArgs e)
+        private async void btnAdd_Click(object sender, EventArgs e)
         {
-            //var dbPar = new Dictionary<string, string>();
-            //dbPar.Add(DbService.pn_dbName, dbName);
-
-            //bool dbExist = dbService.DbExist(dbPar);
-            //textBox1.AppendText("dbExist: " + dbExist + "\r\n");
-
-            //if (!dbExist)
-            //{
-            //    dbPar.Add(DbService.pn_dbScript, "CREATE TABLE COMPANY(\r\n   ID INT PRIMARY KEY     NOT NULL,\r\n   NAME           TEXT    NOT NULL,\r\n   AGE            INT     NOT NULL,\r\n   ADDRESS        CHAR(50),\r\n   SALARY         REAL\r\n)");
-            //    string dbCreate = await dbService.DbCreateAsync(dbPar);
-            //    textBox1.AppendText("dbCreate: " + dbCreate + "\r\n");
-            //}
-            //else
-            //{
-            //    textBox1.AppendText("db already exists\r\n");
-            //}
+            maxId++;
+            string sql = "INSERT INTO COMPANY(ID, NAME, AGE) "
+                + "VALUES(" + maxId + ", '', 0)";
+            await dbService.exeSqlAsync(sql);
+            sql = "SELECT * From COMPANY WHERE ID=" + maxId;
+            DataTable dt = await dbService.exeSqlForDataSetAsync(sql);
+            int i = dataGridView1.Rows.Add(dt.Rows[0].ItemArray);
+            dataGridView1.Rows[i].Tag = dt.Rows[0];
         }
 
-        private void button2_Click(object sender, EventArgs e)
+        private async void dataGridView1_CellValueChanged(object sender, DataGridViewCellEventArgs e)
         {
-            string sql = "INSERT INTO COMPANY(ID,NAME,AGE,ADDRESS,SALARY) "
-                + "VALUES(0,'Mock',22,'Here there',34.33)";
-            dbService.exeSqlAsync(sql);
-            loadeData();
+            string colName = dataGridView1.Columns[e.ColumnIndex].Name;
+            string cellValue =
+                dataGridView1.Rows[e.RowIndex].Cells[e.ColumnIndex].Value.ToString();
+            string rowID =
+                dataGridView1.Rows[e.RowIndex].Cells["ID"].Value.ToString();
+            string sql = "UPDATE COMPANY SET " + colName + "='" + cellValue + "' "
+                + " WHERE ID=" + rowID;
+            await dbService.exeSqlAsync(sql);
+        }
+
+        private async void btnDelete_Click(object sender, EventArgs e)
+        {
+            if(dataGridView1.SelectedRows.Count == 1)
+            {
+                int rowIndex = dataGridView1.SelectedRows[0].Index;
+                int rowID = Convert.ToInt32(dataGridView1.Rows[rowIndex].Cells["ID"].Value);
+                string sql = "DELETE FROM COMPANY "
+                    + " WHERE ID=" + rowID;
+                await dbService.exeSqlAsync(sql);
+                dataGridView1.Rows.RemoveAt(rowIndex);
+            }
+            else
+            {
+                MessageBox.Show("Please select one row to delete.");
+            }
         }
     }
 }
