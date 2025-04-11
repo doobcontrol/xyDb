@@ -14,7 +14,7 @@ namespace xy.Db
         Task Close();
 
         bool DbExist(Dictionary<string, string> dpPars);
-        string DbCreate(Dictionary<string, string> dpPars);
+        Task<string> DbCreate(Dictionary<string, string> dpPars);
 
         void BeginTrans();
         void CommitTrans();

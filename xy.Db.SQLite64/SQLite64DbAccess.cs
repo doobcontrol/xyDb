@@ -53,7 +53,7 @@ namespace xy.Db.SQLite64
             return File.Exists(dpPars[DbService.pn_dbName]);
         }
 
-        public string DbCreate(Dictionary<string, string> dpPars)
+        public async Task<string> DbCreate(Dictionary<string, string> dpPars)
         {
             if (File.Exists(dpPars[DbService.pn_dbName]))
             {

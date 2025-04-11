@@ -29,10 +29,9 @@ namespace xy.Db
         {
             await db.OpenAsync(connectionString);
         }
-        public async Task create(Dictionary<string, string> dpPars)
+        public async Task OpenForAdminAsync(Dictionary<string, string> dpPars)
         {
             await db.OpenForAdminAsync(dpPars);
-            //await db.exeSql(dpPars[pn_dbScript]);
         }
         public async Task close()
         {
@@ -43,9 +42,9 @@ namespace xy.Db
         {
             return db.DbExist(dpPars);
         }
-        public string DbCreate(Dictionary<string, string> dpPars)
+        public async Task<string> DbCreateAsync(Dictionary<string, string> dpPars)
         {
-            return db.DbCreate(dpPars);
+            return await db.DbCreate(dpPars);
         }
 
 

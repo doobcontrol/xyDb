@@ -9,6 +9,7 @@ namespace xyDbSample
     {
         string dbName = "testDb";
         string dbUser = "testUser";
+        string dbPassword = "testPassword";
         DbService dbService;
         public Form1(string dbType, bool CreateNewDb)
         {
@@ -51,45 +52,34 @@ namespace xyDbSample
         }
         private async Task initPostgreSQLAsync(bool CreateNewDb)
         {
-            if (CreateNewDb)
+            try
             {
-                Dictionary<string, string> dpPars = new Dictionary<string, string>();
-                dpPars.Add(DbService.pn_dbServer, "localhost");
-                dpPars.Add(DbService.pn_dbName, "postgres");
-                dpPars.Add(DbService.pn_dbUser, "postgres");
-                dpPars.Add(DbService.pn_dbPassword, "123456");
-                dbService = new DbService(
-                    new PostgreSQLDbAccess());
-                await dbService.create(dpPars);
-                await dbService.exeSqlAsync("CREATE USER " + dbUser + " WITH PASSWORD 'jw8s0F4';");
-                await dbService.exeSqlAsync("CREATE DATABASE " + dbName + " OWNER " + dbUser + ";");
-                await dbService.close();
-
-                try
+                if (CreateNewDb)
                 {
-                    string ConnectionString =
-                        "Server=localhost;"
-                        + "Database=" + dbName.ToLower() + ";" //Why lower()?
-                        + "User Id=" + dbUser.ToLower() + ";"
-                        + "Password=jw8s0F4;";
+                    Dictionary<string, string> dpPars = new Dictionary<string, string>();
+                    dpPars.Add(DbService.pn_dbServer, "localhost");
+                    dpPars.Add(DbService.pn_dbName, "postgres");
+                    dpPars.Add(DbService.pn_dbUser, "postgres");
+                    dpPars.Add(DbService.pn_dbPassword, "123456");
                     dbService = new DbService(
-                        ConnectionString, new PostgreSQLDbAccess());
-                    await dbService.openAsync();
-                    await dbService.exeSqlAsync("CREATE TABLE COMPANY("
+                        new PostgreSQLDbAccess());
+                    await dbService.OpenForAdminAsync(dpPars);
+                    dpPars = new Dictionary<string, string>();
+                    dpPars.Add(DbService.pn_dbName, dbName);
+                    dpPars.Add(DbService.pn_dbUser, dbUser);
+                    dpPars.Add(DbService.pn_dbPassword, dbPassword);
+                    dpPars.Add(DbService.pn_dbScript,
+                        "CREATE TABLE COMPANY("
                         + "ID INT PRIMARY KEY     NOT NULL,"
                         + "NAME           TEXT    NOT NULL,"
                         + "AGE            INT     NOT NULL,"
                         + "ADDRESS        CHAR(50),"
-                        + "SALARY         REAL);");
+                        + "SALARY         REAL);"
+                        );
+                    string createdConnectString =
+                        await dbService.DbCreateAsync(dpPars);
                 }
-                catch (Exception e)
-                {
-                    MessageBox.Show(e.Message);
-                }
-            }
-            else
-            {
-                try
+                else
                 {
                     string ConnectionString =
                         "Server=localhost;"
@@ -102,10 +92,10 @@ namespace xyDbSample
                     await dbService.openAsync();
                     loadeData();
                 }
-                catch (Exception e)
-                {
-                    MessageBox.Show(e.Message);
-                }
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(e.Message);
             }
         }
         private void loadeData()
@@ -136,16 +126,16 @@ namespace xyDbSample
             bool dbExist = dbService.DbExist(dbPar);
             textBox1.AppendText("dbExist: " + dbExist + "\r\n");
 
-            if (!dbExist)
-            {
-                dbPar.Add(DbService.pn_dbScript, "CREATE TABLE COMPANY(\r\n   ID INT PRIMARY KEY     NOT NULL,\r\n   NAME           TEXT    NOT NULL,\r\n   AGE            INT     NOT NULL,\r\n   ADDRESS        CHAR(50),\r\n   SALARY         REAL\r\n)");
-                string dbCreate = dbService.DbCreate(dbPar);
-                textBox1.AppendText("dbCreate: " + dbCreate + "\r\n");
-            }
-            else
-            {
-                textBox1.AppendText("db already exists\r\n");
-            }
+            //if (!dbExist)
+            //{
+            //    dbPar.Add(DbService.pn_dbScript, "CREATE TABLE COMPANY(\r\n   ID INT PRIMARY KEY     NOT NULL,\r\n   NAME           TEXT    NOT NULL,\r\n   AGE            INT     NOT NULL,\r\n   ADDRESS        CHAR(50),\r\n   SALARY         REAL\r\n)");
+            //    string dbCreate = await dbService.DbCreateAsync(dbPar);
+            //    textBox1.AppendText("dbCreate: " + dbCreate + "\r\n");
+            //}
+            //else
+            //{
+            //    textBox1.AppendText("db already exists\r\n");
+            //}
         }
 
         private void button2_Click(object sender, EventArgs e)

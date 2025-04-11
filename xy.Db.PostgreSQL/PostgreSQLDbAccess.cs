@@ -1,6 +1,7 @@
 ﻿using Npgsql;
 using System.Data;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 using static Npgsql.FSharp.Sql.ExecutionTarget;
 
 namespace xy.Db.PostgreSQL
@@ -341,9 +342,39 @@ namespace xy.Db.PostgreSQL
             return false;
         }
 
-        public string DbCreate(Dictionary<string, string> dpPars)
+        public async Task<string> DbCreate(Dictionary<string, string> dpPars)
         {
-            return null;
+            //create user and database (check exist before?)
+            await exeSql(
+                "CREATE USER " + dpPars[DbService.pn_dbUser] + 
+                " WITH PASSWORD '" + dpPars[DbService.pn_dbPassword] + "';");
+            await exeSql(
+                "CREATE DATABASE " + dpPars[DbService.pn_dbName] + 
+                " OWNER " + dpPars[DbService.pn_dbUser] + ";");
+
+            //PostgreSQL converts unquoted identifiers to lowercase by default.
+            //Using uppercase letters can lead to confusion and unintended behavior,
+            //as these names must be quoted to retain their case sensitivity.
+            //For example, TableName is distinct from tablename ,
+            //leading to potential issues in queries and schema management.
+            //To avoid this, it's a common practice to use lowercase for all identifiers.
+            //So we convert dbName and dbUser to lowercase.
+            string ConnectionString =
+                "Server=localhost;"
+                + "Database=" + dpPars[DbService.pn_dbName].ToLower() + ";" //Why lower()?
+                + "User Id=" + dpPars[DbService.pn_dbUser].ToLower() + ";"
+                + "Password=" + dpPars[DbService.pn_dbPassword] + ";";
+
+            //create tabes
+            //PostgreSql does not support create table to other database,
+            //and does not support switch database on a connection.
+            //So we need to close the connection
+            //and create a new one use the connection string of new database.
+            await Close();
+            await OpenAsync(ConnectionString);
+            await exeSql(dpPars[DbService.pn_dbScript]);
+
+            return ConnectionString;
         }
 
         public void BeginTrans()
