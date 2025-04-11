@@ -22,6 +22,12 @@ namespace xyDbSample
         string dbName = "testDb";
         string dbUser = "testUser";
         string dbPassword = "testPassword";
+        string dbScript = "CREATE TABLE COMPANY("
+                    + "ID INT PRIMARY KEY     NOT NULL,"
+                    + "NAME           TEXT    NOT NULL,"
+                    + "AGE            INT     NOT NULL,"
+                    + "ADDRESS        CHAR(50),"
+                    + "SALARY         REAL);";
         private DbService dbService;
         public DbService DbService { get => dbService; set => dbService = value; }
 
@@ -58,9 +64,9 @@ namespace xyDbSample
                 if (sCfg != null)
                 {
                     checkBox1.Checked = !sCfg[xyCfg.dbCeated].GetValue<bool>();
+                    checkBox1.Visible = true;
+                    button1.Enabled = true;
                 }
-                checkBox1.Visible = true;
-                button1.Enabled = true;
             };
             comboBox1.DataSource = xyCfg.getDbList();
             comboBox1.DisplayMember = "Key";
@@ -93,22 +99,43 @@ namespace xyDbSample
 
         private async Task initSQLite(bool CreateNewDb)
         {
-            string directoryName =
-                System.IO.Path.GetDirectoryName(
-                new System.Uri(System.Reflection.Assembly.
-                GetExecutingAssembly().CodeBase).LocalPath);
-            string ConnectionString = "Data Source=" + directoryName + "/"
-                + dbName + ";";
-            DbService = new DbService(
-                ConnectionString,
-                new SQLite64DbAccess());
-            DbService.openAsync();
+            if (CreateNewDb)
+            {
+                Dictionary<string, string> dpPars = 
+                    new Dictionary<string, string>();
+                DbService = new DbService(
+                    new SQLite64DbAccess());
+                await DbService.OpenForAdminAsync(dpPars);
+                dpPars = new Dictionary<string, string>();
+                dpPars.Add(DbService.pn_dbName, dbName);
+                dpPars.Add(DbService.pn_dbUser, dbUser);
+                dpPars.Add(DbService.pn_dbPassword, dbPassword);
+                dpPars.Add(DbService.pn_dbScript, dbScript);
+                string createdConnectString =
+                    await DbService.DbCreateAsync(dpPars);
+
+                xyCfg.set(xyCfg.dT_SQLite,
+                    new Dictionary<string, string>() {
+                        { xyCfg.dbCeated, true.ToString() },
+                        { xyCfg.connStr, createdConnectString}
+                    });
+            }
+            else
+            {
+                string ConnectionString =
+                    xyCfg.get(xyCfg.dT_SQLite, xyCfg.connStr);
+                DbService = new DbService(
+                    ConnectionString,
+                    new SQLite64DbAccess());
+                await DbService.openAsync();
+            }
         }
         private async Task initPostgreSQLAsync(bool CreateNewDb)
         {
             if (CreateNewDb)
             {
-                Dictionary<string, string> dpPars = new Dictionary<string, string>();
+                Dictionary<string, string> dpPars = 
+                    new Dictionary<string, string>();
                 dpPars.Add(DbService.pn_dbServer, "localhost");
                 dpPars.Add(DbService.pn_dbName, "postgres");
                 dpPars.Add(DbService.pn_dbUser, "postgres");
@@ -120,14 +147,7 @@ namespace xyDbSample
                 dpPars.Add(DbService.pn_dbName, dbName);
                 dpPars.Add(DbService.pn_dbUser, dbUser);
                 dpPars.Add(DbService.pn_dbPassword, dbPassword);
-                dpPars.Add(DbService.pn_dbScript,
-                    "CREATE TABLE COMPANY("
-                    + "ID INT PRIMARY KEY     NOT NULL,"
-                    + "NAME           TEXT    NOT NULL,"
-                    + "AGE            INT     NOT NULL,"
-                    + "ADDRESS        CHAR(50),"
-                    + "SALARY         REAL);"
-                    );
+                dpPars.Add(DbService.pn_dbScript, dbScript);
                 string createdConnectString =
                     await DbService.DbCreateAsync(dpPars);
 
