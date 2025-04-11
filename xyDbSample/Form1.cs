@@ -93,7 +93,7 @@ namespace xyDbSample
                 {
                     string ConnectionString =
                         "Server=localhost;"
-                        + "Database=" + dbName.ToLower() + ";" //Why lower()?
+                        + "Database=" + dbName + ";" //Why lower()?
                         + "User Id=" + dbUser.ToLower() + ";"
                         + "Password=jw8s0F4;";
                     dbService = new DbService(
