@@ -1,3 +1,5 @@
+using xy.Db;
+
 namespace xyDbSample
 {
     internal static class Program
@@ -14,10 +16,9 @@ namespace xyDbSample
             FrmDbSelector frmDbSelector = new FrmDbSelector();
             if (frmDbSelector.ShowDialog() == DialogResult.OK)
             {
-                Application.Run(new Form1(
-                    frmDbSelector.DbType,
-                    frmDbSelector.CreateNewDb
-                    ));
+                DbService dbService = frmDbSelector.DbService;
+                frmDbSelector.DbService = null; // Dispose of the form to free up resources
+                Application.Run(new Form1(dbService));
             }
         }
     }
