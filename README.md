@@ -1,3 +1,4 @@
-通用数据库操作接口定义及各数据库具体数据库操作实现  
+## xyDb
+Definition of general database operation interface and implementation of specific database operations for each database  
   
-目前包括：SQLite,SQLite64,SqlServer  
+Currently includes: SQLite64, PostgreSQL  
