@@ -11,7 +11,7 @@ namespace xy.Db
     {
         Task OpenAsync(string ConnectionString);
         Task OpenForAdminAsync(Dictionary<string, string> dpPars);
-        void Close();
+        Task Close();
 
         bool DbExist(Dictionary<string, string> dpPars);
         string DbCreate(Dictionary<string, string> dpPars);

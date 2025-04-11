@@ -1,3 +1,4 @@
+using System.Data;
 using xy.Db;
 using xy.Db.PostgreSQL;
 using xy.Db.SQLite64;
@@ -7,6 +8,7 @@ namespace xyDbSample
     public partial class Form1 : Form
     {
         string dbName = "testDb";
+        string dbUser = "testUser";
         DbService dbService;
         public Form1(string dbType, bool CreateNewDb)
         {
@@ -59,15 +61,16 @@ namespace xyDbSample
                 dbService = new DbService(
                     new PostgreSQLDbAccess());
                 await dbService.create(dpPars);
-                await dbService.exeSqlAsync("CREATE USER testUser WITH PASSWORD 'jw8s0F4';");
-                await dbService.exeSqlAsync("CREATE DATABASE " + dbName + " OWNER testUser;");
+                await dbService.exeSqlAsync("CREATE USER " + dbUser + " WITH PASSWORD 'jw8s0F4';");
+                await dbService.exeSqlAsync("CREATE DATABASE " + dbName + " OWNER " + dbUser + ";");
+                await dbService.close();
 
                 try
                 {
                     string ConnectionString =
                         "Server=localhost;"
-                        + "Database=" + dbName + ";"
-                        + "User Id=testUser;"
+                        + "Database=" + dbName.ToLower() + ";" //Why lower()?
+                        + "User Id=" + dbUser.ToLower() + ";"
                         + "Password=jw8s0F4;";
                     dbService = new DbService(
                         ConnectionString, new PostgreSQLDbAccess());
@@ -90,13 +93,14 @@ namespace xyDbSample
                 {
                     string ConnectionString =
                         "Server=localhost;"
-                        + "Database=" + dbName + ";"
-                        + "User Id=testUser;"
+                        + "Database=" + dbName.ToLower() + ";" //Why lower()?
+                        + "User Id=" + dbUser.ToLower() + ";"
                         + "Password=jw8s0F4;";
                     dbService = new DbService(
                         ConnectionString,
                         new PostgreSQLDbAccess());
                     await dbService.openAsync();
+                    loadeData();
                 }
                 catch (Exception e)
                 {
@@ -110,9 +114,17 @@ namespace xyDbSample
             var dt = dbService.exeSqlForDataSetAsync(sql);
             if (dt != null)
             {
-                dataGridView1.DataSource = dt;
-                dataGridView1.AutoSizeColumnsMode =
-                    DataGridViewAutoSizeColumnsMode.Fill;
+                dataGridView1.Columns.Clear();
+                dataGridView1.Rows.Clear();
+                dataGridView1.Columns.Add("ID", "ID");
+                dataGridView1.Columns.Add("NAME", "NAME");
+                dataGridView1.Columns.Add("AGE", "AGE");
+                dataGridView1.Columns.Add("ADDRESS", "ADDRESS");
+                dataGridView1.Columns.Add("SALARY", "SALARY");
+                foreach (DataRow row in dt.Result.Rows)
+                {
+                    dataGridView1.Rows.Add(row.ItemArray);
+                }
             }
         }
 

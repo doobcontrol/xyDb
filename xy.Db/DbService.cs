@@ -34,6 +34,10 @@ namespace xy.Db
             await db.OpenForAdminAsync(dpPars);
             //await db.exeSql(dpPars[pn_dbScript]);
         }
+        public async Task close()
+        {
+            await db.Close();
+        }
 
         public bool DbExist(Dictionary<string, string> dpPars)
         {

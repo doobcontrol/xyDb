@@ -44,7 +44,7 @@ namespace xy.Db.SQLite64
         {
         }
 
-        public void Close()
+        public async Task Close()
         {
         }
 

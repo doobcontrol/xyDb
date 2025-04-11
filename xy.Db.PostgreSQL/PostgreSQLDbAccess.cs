@@ -1,5 +1,6 @@
 ﻿using Npgsql;
 using System.Data;
+using System.Threading.Tasks;
 using static Npgsql.FSharp.Sql.ExecutionTarget;
 
 namespace xy.Db.PostgreSQL
@@ -37,8 +38,12 @@ namespace xy.Db.PostgreSQL
             }
         }
 
-        public void Close()
+        public async Task Close()
         {
+            if (conn != null)
+            {
+                await conn.CloseAsync();
+            }
         }
 
         public bool DbExist(Dictionary<string, string> dpPars)
