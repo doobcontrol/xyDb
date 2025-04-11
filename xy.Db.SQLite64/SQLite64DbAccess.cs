@@ -35,12 +35,12 @@ namespace xy.Db.SQLite64
         private string connectionString;
 
         #region IDbAccess Members
-        public void Open(string ConnectionString)
+        public async Task OpenAsync(string ConnectionString)
         {
             this.connectionString = ConnectionString;
         }
 
-        public void OpenForAdmin(Dictionary<string, string> dpPars)
+        public async Task OpenForAdminAsync(Dictionary<string, string> dpPars)
         {
         }
 
@@ -89,7 +89,7 @@ namespace xy.Db.SQLite64
             throw new NotImplementedException();
         }
 
-        public void exeSql(string strSql)
+        public async Task exeSql(string strSql)
         {
             try
             {
@@ -107,7 +107,7 @@ namespace xy.Db.SQLite64
             }
         }
 
-        public DataSet exeSqlForDataSet(string QueryString)
+        public async Task<DataSet> exeSqlForDataSet(string QueryString)
         {
             DataSet ds = new DataSet();
             try

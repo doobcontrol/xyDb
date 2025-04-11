@@ -9,8 +9,8 @@ namespace xy.Db
 {
     public interface IDbAccess
     {
-        void Open(string ConnectionString);
-        void OpenForAdmin(Dictionary<string, string> dpPars);
+        Task OpenAsync(string ConnectionString);
+        Task OpenForAdminAsync(Dictionary<string, string> dpPars);
         void Close();
 
         bool DbExist(Dictionary<string, string> dpPars);
@@ -19,7 +19,7 @@ namespace xy.Db
         void BeginTrans();
         void CommitTrans();
         void RollbackTrans();
-        void exeSql(string strSql);
-        DataSet exeSqlForDataSet(string QueryString);
+        Task exeSql(string strSql);
+        Task<DataSet> exeSqlForDataSet(string QueryString);
     }
 }

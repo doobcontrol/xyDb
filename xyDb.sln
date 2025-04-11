@@ -24,6 +24,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "xy.Db", "xy.Db\xy.Db.csproj
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "xy.Db.SQLite64", "xy.Db.SQLite64\xy.Db.SQLite64.csproj", "{FA786734-082B-4E5C-B0C1-0B4D45767F1E}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "xy.Db.PostgreSQL", "xy.Db.PostgreSQL\xy.Db.PostgreSQL.csproj", "{D97B62B3-0C9B-4271-8147-5A413DF203F9}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -58,6 +60,10 @@ Global
 		{FA786734-082B-4E5C-B0C1-0B4D45767F1E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FA786734-082B-4E5C-B0C1-0B4D45767F1E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FA786734-082B-4E5C-B0C1-0B4D45767F1E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D97B62B3-0C9B-4271-8147-5A413DF203F9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D97B62B3-0C9B-4271-8147-5A413DF203F9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D97B62B3-0C9B-4271-8147-5A413DF203F9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D97B62B3-0C9B-4271-8147-5A413DF203F9}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -9,6 +9,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\xy.Db.PostgreSQL\xy.Db.PostgreSQL.csproj" />
     <ProjectReference Include="..\xy.Db.SQLite64\xy.Db.SQLite64.csproj" />
     <ProjectReference Include="..\xy.Db\xy.Db.csproj" />
   </ItemGroup>
