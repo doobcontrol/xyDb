@@ -18,7 +18,9 @@ namespace xyDbSample
             {
                 DbService dbService = frmDbSelector.DbService;
                 frmDbSelector.DbService = null; // Dispose of the form to free up resources
-                Application.Run(new Form1(dbService));
+                Form1 form1 = new Form1(dbService);
+                form1.Text = "xyDbSample - " + frmDbSelector.DbType;
+                Application.Run(form1);
             }
         }
     }

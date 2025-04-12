@@ -32,6 +32,13 @@ namespace xyDbSample
                 keyValuePairs[connStr] = "";
                 JsonObj.Add(keyValuePairs);
 
+                //SQLServer
+                keyValuePairs = new JsonObject();
+                keyValuePairs[dbType] = dT_SQLServer;
+                keyValuePairs[dbCeated] = false;
+                keyValuePairs[connStr] = "";
+                JsonObj.Add(keyValuePairs);
+
                 string jsonString = JsonSerializer.Serialize(JsonObj);
                 File.WriteAllText(cfgFile, jsonString);
             }
@@ -108,6 +115,7 @@ namespace xyDbSample
         public const string connStr = "connStr";
         public const string dT_SQLite = "SQLite";
         public const string dT_PostgreSQL = "PostgreSQL";
+        public const string dT_SQLServer = "SQLServer";
 
         static private xyCfg instance = new xyCfg();
         static public string get(string dType, string pName)

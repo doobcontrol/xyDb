@@ -13,12 +13,14 @@ using System.Xml.Linq;
 using xy.Db;
 using xy.Db.PostgreSQL;
 using xy.Db.SQLite64;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement;
+using xy.Db.SQLServer;
+using xySoft.log;
 
 namespace xyDbSample
 {
     public partial class FrmDbSelector : Form
     {
+        string dbServer = "localhost";
         string dbName = "testDb";
         string dbUser = "testUser";
         string dbPassword = "testPassword";
@@ -82,6 +84,18 @@ namespace xyDbSample
                             txtdbPassword.Text = "123456";
                             txtdbServer.Text = "localhost";
                             break;
+                            break;
+                        case xyCfg.dT_SQLServer:
+                            showAdminConnParPanel(checkBox1.Checked);
+                            lbdbName.Text = "Database Name";
+                            lbdbUser.Text = "User Name";
+                            lbdbPassword.Text = "Password";
+                            lbdbServer.Text = "Server Name";
+                            txtdbName.Text = "master";
+                            txtdbUser.Text = "sa";
+                            txtdbPassword.Text = "123456";
+                            txtdbServer.Text = @"localhost\SQLEXPRESS";
+                            break;
                     }
                 }
                 else
@@ -124,7 +138,11 @@ namespace xyDbSample
 
         private async void button1_Click(object sender, EventArgs e)
         {
-
+            this.Text += " - processing ...";
+            this.ControlBox = false;
+            this.panelTop.Enabled = false;
+            this.panelTottom.Enabled = false;
+            this.panelAdminConnPar.Enabled = false;
             try
             {
                 IDbAccess? dbAccess = null;
@@ -137,6 +155,7 @@ namespace xyDbSample
                 //the params for create database(dbname, user, table etc.) 
                 Dictionary<string, string> dbCreatePars =
                     new Dictionary<string, string>();
+                dbCreatePars.Add(DbService.pn_dbServer, dbServer);
                 dbCreatePars.Add(DbService.pn_dbName, dbName);
                 dbCreatePars.Add(DbService.pn_dbUser, dbUser);
                 dbCreatePars.Add(DbService.pn_dbPassword, dbPassword);
@@ -151,11 +170,26 @@ namespace xyDbSample
                         dbAccess = new PostgreSQLDbAccess();
                         adminPars.Add(DbService.pn_dbServer,
                             txtdbServer.Text);
+                        dbCreatePars[DbService.pn_dbServer]
+                            = txtdbServer.Text;
                         adminPars.Add(DbService.pn_dbName, 
                             txtdbName.Text);
                         adminPars.Add(DbService.pn_dbUser, 
                             txtdbUser.Text);
                         adminPars.Add(DbService.pn_dbPassword, 
+                            txtdbPassword.Text);
+                        break;
+                    case xyCfg.dT_SQLServer:
+                        dbAccess = new SQLServerDbAccess();
+                        adminPars.Add(DbService.pn_dbServer,
+                            txtdbServer.Text);
+                        dbCreatePars[DbService.pn_dbServer]
+                            = txtdbServer.Text;
+                        adminPars.Add(DbService.pn_dbName,
+                            txtdbName.Text);
+                        adminPars.Add(DbService.pn_dbUser,
+                            txtdbUser.Text);
+                        adminPars.Add(DbService.pn_dbPassword,
                             txtdbPassword.Text);
                         break;
                 }
@@ -187,7 +221,13 @@ namespace xyDbSample
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message);
+                XyLog.log(ex.Message + "\r\n" + ex.StackTrace);
+                if(ex.InnerException != null)
+                {
+                    XyLog.log(ex.InnerException.Message + "\r\n" 
+                        + ex.InnerException.StackTrace);
+                }
+                MessageBox.Show(ex.Message + "\r\nCheck detail in the log");
                 DialogResult = DialogResult.Cancel;
             }
         }

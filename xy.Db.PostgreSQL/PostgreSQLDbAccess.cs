@@ -360,7 +360,7 @@ namespace xy.Db.PostgreSQL
             //To avoid this, it's a common practice to use lowercase for all identifiers.
             //So we convert dbName and dbUser to lowercase.
             string ConnectionString =
-                "Server=localhost;"
+                "Server=" + dpPars[DbService.pn_dbServer] + ";"
                 + "Database=" + dpPars[DbService.pn_dbName].ToLower() + ";" //Why lower()?
                 + "User Id=" + dpPars[DbService.pn_dbUser].ToLower() + ";"
                 + "Password=" + dpPars[DbService.pn_dbPassword] + ";";
