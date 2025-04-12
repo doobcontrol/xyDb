@@ -66,12 +66,60 @@ namespace xyDbSample
                     checkBox1.Checked = !sCfg[xyCfg.dbCeated].GetValue<bool>();
                     checkBox1.Visible = true;
                     button1.Enabled = true;
+                    switch (DbType)
+                    {
+                        case xyCfg.dT_SQLite:
+                            showAdminConnParPanel(false);
+                            break;
+                        case xyCfg.dT_PostgreSQL:
+                            showAdminConnParPanel(checkBox1.Checked);
+                            lbdbName.Text = "Database Name";
+                            lbdbUser.Text = "User Name";
+                            lbdbPassword.Text = "Password";
+                            lbdbServer.Text = "Server Name";
+                            txtdbName.Text = "postgres";
+                            txtdbUser.Text = "postgres";
+                            txtdbPassword.Text = "123456";
+                            txtdbServer.Text = "localhost";
+                            break;
+                    }
+                }
+                else
+                {
+                    showAdminConnParPanel(false);
                 }
             };
             comboBox1.DataSource = xyCfg.getDbList();
             comboBox1.DisplayMember = "Key";
             comboBox1.ValueMember = "Value";
             comboBox1.SelectedIndex = -1;
+
+            this.FormBorderStyle = FormBorderStyle.FixedDialog;
+            this.MaximizeBox = false;
+            this.MinimizeBox = false;
+            this.StartPosition = FormStartPosition.CenterParent;
+            this.AcceptButton = button1;
+
+            showAdminConnParPanel(false);
+        }
+        private void showAdminConnParPanel(bool toShow)
+        {
+            int parPanelHeight = 0;
+            if (toShow)
+            {
+                parPanelHeight = panelAdminConnPar.Height;
+                panelAdminConnPar.Visible = true;
+                panelAdminConnPar.BringToFront();
+                panelAdminConnPar.Dock = DockStyle.Fill;
+            }
+            else
+            {
+                parPanelHeight = 0;
+                panelAdminConnPar.Visible = false;
+            }
+            Size size = this.ClientSize;
+            size.Height = panelTop.Height + panelTottom.Height + parPanelHeight;
+            this.ClientSize = size;
         }
 
         private async void button1_Click(object sender, EventArgs e)
@@ -101,10 +149,14 @@ namespace xyDbSample
                         break;
                     case xyCfg.dT_PostgreSQL:
                         dbAccess = new PostgreSQLDbAccess();
-                        adminPars.Add(DbService.pn_dbServer, "localhost");
-                        adminPars.Add(DbService.pn_dbName, "postgres");
-                        adminPars.Add(DbService.pn_dbUser, "postgres");
-                        adminPars.Add(DbService.pn_dbPassword, "123456");
+                        adminPars.Add(DbService.pn_dbServer,
+                            txtdbServer.Text);
+                        adminPars.Add(DbService.pn_dbName, 
+                            txtdbName.Text);
+                        adminPars.Add(DbService.pn_dbUser, 
+                            txtdbUser.Text);
+                        adminPars.Add(DbService.pn_dbPassword, 
+                            txtdbPassword.Text);
                         break;
                 }
                 if (dbAccess != null)
