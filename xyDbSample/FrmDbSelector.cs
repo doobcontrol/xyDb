@@ -79,14 +79,57 @@ namespace xyDbSample
 
             try
             {
+                IDbAccess? dbAccess = null;
+
+                //the params for create connection string
+                //to an admin account of the dbms
+                Dictionary<string, string> adminPars =
+                    new Dictionary<string, string>();
+
+                //the params for create database(dbname, user, table etc.) 
+                Dictionary<string, string> dbCreatePars =
+                    new Dictionary<string, string>();
+                dbCreatePars.Add(DbService.pn_dbName, dbName);
+                dbCreatePars.Add(DbService.pn_dbUser, dbUser);
+                dbCreatePars.Add(DbService.pn_dbPassword, dbPassword);
+                dbCreatePars.Add(DbService.pn_dbScript, dbScript);
+
                 switch (DbType)
                 {
-                    case "SQLite":
-                        await initSQLite(CreateNewDb);
+                    case xyCfg.dT_SQLite:
+                        dbAccess = new SQLite64DbAccess();
                         break;
-                    case "PostgreSQL":
-                        await initPostgreSQLAsync(CreateNewDb);
+                    case xyCfg.dT_PostgreSQL:
+                        dbAccess = new PostgreSQLDbAccess();
+                        adminPars.Add(DbService.pn_dbServer, "localhost");
+                        adminPars.Add(DbService.pn_dbName, "postgres");
+                        adminPars.Add(DbService.pn_dbUser, "postgres");
+                        adminPars.Add(DbService.pn_dbPassword, "123456");
                         break;
+                }
+                if (dbAccess != null)
+                {
+                    if (CreateNewDb)
+                    {
+                        DbService = new DbService(dbAccess);
+                        await DbService.OpenForAdminAsync(adminPars);
+                        string createdConnectString =
+                            await DbService.DbCreateAsync(dbCreatePars);
+
+                        xyCfg.set(DbType,
+                            new Dictionary<string, string>() {
+                        { xyCfg.dbCeated, true.ToString() },
+                        { xyCfg.connStr, createdConnectString}
+                            });
+                    }
+                    else
+                    {
+                        string ConnectionString =
+                            xyCfg.get(DbType, xyCfg.connStr);
+                        DbService = new DbService(
+                            ConnectionString, dbAccess);
+                        await DbService.openAsync();
+                    }
                 }
                 DialogResult = DialogResult.OK;
             }
@@ -94,77 +137,6 @@ namespace xyDbSample
             {
                 MessageBox.Show(ex.Message);
                 DialogResult = DialogResult.Cancel;
-            }
-        }
-
-        private async Task initSQLite(bool CreateNewDb)
-        {
-            if (CreateNewDb)
-            {
-                Dictionary<string, string> dpPars = 
-                    new Dictionary<string, string>();
-                DbService = new DbService(
-                    new SQLite64DbAccess());
-                await DbService.OpenForAdminAsync(dpPars);
-                dpPars = new Dictionary<string, string>();
-                dpPars.Add(DbService.pn_dbName, dbName);
-                dpPars.Add(DbService.pn_dbUser, dbUser);
-                dpPars.Add(DbService.pn_dbPassword, dbPassword);
-                dpPars.Add(DbService.pn_dbScript, dbScript);
-                string createdConnectString =
-                    await DbService.DbCreateAsync(dpPars);
-
-                xyCfg.set(xyCfg.dT_SQLite,
-                    new Dictionary<string, string>() {
-                        { xyCfg.dbCeated, true.ToString() },
-                        { xyCfg.connStr, createdConnectString}
-                    });
-            }
-            else
-            {
-                string ConnectionString =
-                    xyCfg.get(xyCfg.dT_SQLite, xyCfg.connStr);
-                DbService = new DbService(
-                    ConnectionString,
-                    new SQLite64DbAccess());
-                await DbService.openAsync();
-            }
-        }
-        private async Task initPostgreSQLAsync(bool CreateNewDb)
-        {
-            if (CreateNewDb)
-            {
-                Dictionary<string, string> dpPars = 
-                    new Dictionary<string, string>();
-                dpPars.Add(DbService.pn_dbServer, "localhost");
-                dpPars.Add(DbService.pn_dbName, "postgres");
-                dpPars.Add(DbService.pn_dbUser, "postgres");
-                dpPars.Add(DbService.pn_dbPassword, "123456");
-                DbService = new DbService(
-                    new PostgreSQLDbAccess());
-                await DbService.OpenForAdminAsync(dpPars);
-                dpPars = new Dictionary<string, string>();
-                dpPars.Add(DbService.pn_dbName, dbName);
-                dpPars.Add(DbService.pn_dbUser, dbUser);
-                dpPars.Add(DbService.pn_dbPassword, dbPassword);
-                dpPars.Add(DbService.pn_dbScript, dbScript);
-                string createdConnectString =
-                    await DbService.DbCreateAsync(dpPars);
-
-                xyCfg.set(xyCfg.dT_PostgreSQL,
-                    new Dictionary<string, string>() {
-                        { xyCfg.dbCeated, true.ToString() },
-                        { xyCfg.connStr, createdConnectString}
-                    });
-            }
-            else
-            {
-                string ConnectionString =
-                    xyCfg.get(xyCfg.dT_PostgreSQL, xyCfg.connStr);
-                DbService = new DbService(
-                    ConnectionString,
-                    new PostgreSQLDbAccess());
-                await DbService.openAsync();
             }
         }
     }
