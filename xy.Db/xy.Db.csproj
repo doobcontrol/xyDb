@@ -4,6 +4,26 @@
     <TargetFramework>net8.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
+    <Title>xy Db interface</Title>
+    <Authors>dooacontrol</Authors>
+    <Company>dooacontrol</Company>
+    <Description>xy Db interface</Description>
+    <RepositoryUrl>https://github.com/doobcontrol/xyDb</RepositoryUrl>
+    <PackageTags>database</PackageTags>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <Version>1.0.3</Version>
+    <PackageLicenseFile>LICENSE.txt</PackageLicenseFile>
   </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="..\LICENSE.txt">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+    <None Include="..\README.md">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+  </ItemGroup>
 
 </Project>

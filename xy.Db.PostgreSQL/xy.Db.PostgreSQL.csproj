@@ -4,14 +4,32 @@
     <TargetFramework>net8.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
+    <Version>1.0.3</Version>
+    <Title>xy Db PostgreSQL Implement</Title>
+    <Description>xy Db PostgreSQL Implement</Description>
+    <Authors>dooacontrol</Authors>
+    <Company>dooacontrol</Company>
+    <Product></Product>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <RepositoryUrl>https://github.com/doobcontrol/xyDb</RepositoryUrl>
+    <PackageTags>database;PostgreSQL</PackageTags>
+    <PackageLicenseFile>LICENSE.txt</PackageLicenseFile>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Npgsql.FSharp" Version="8.0.0" />
+    <None Include="..\LICENSE.txt">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+    <None Include="..\README.md">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\xy.Db\xy.Db.csproj" />
+    <PackageReference Include="Npgsql.FSharp" Version="8.0.0" />
+    <PackageReference Include="xy.Db" Version="1.0.3" />
   </ItemGroup>
 
 </Project>

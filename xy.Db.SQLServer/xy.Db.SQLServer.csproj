@@ -4,16 +4,27 @@
     <TargetFramework>net8.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
+    <Title>xy Db SQLServer Implement</Title>
+    <Version>1.0.3</Version>
+    <Description>xy Db SQLServer Implement</Description>
+    <Authors>dooacontrol</Authors>
+    <Company>dooacontrol</Company>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <RepositoryUrl>https://github.com/doobcontrol/xyDb</RepositoryUrl>
+    <PackageTags>database;SQLServer</PackageTags>
+    <PackageLicenseFile>README.md</PackageLicenseFile>
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\xy.Db\xy.Db.csproj" />
+    <None Include="..\README.md">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
   </ItemGroup>
 
   <ItemGroup>
-    <Reference Include="System.Data.SqlClient">
-      <HintPath>Z:\other\NuGet\system.data.sqlclient\4.8.1\ref\netcoreapp2.1\System.Data.SqlClient.dll</HintPath>
-    </Reference>
+    <PackageReference Include="System.Data.SqlClient" Version="4.9.0" />
+    <PackageReference Include="xy.Db" Version="1.0.3" />
   </ItemGroup>
 
 </Project>
