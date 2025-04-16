@@ -58,5 +58,18 @@ namespace xy.Db
             await db.exeSql(SqlStr);
         }
 
+
+        #region Called by the client to determine how to build script
+
+        bool createForeignKeyWhenCreateTable(){
+            return db.createForeignKeyWhenCreateTable();
+        }
+        bool createForeignKeyAfterCreateTable()
+        {
+            return db.createForeignKeyAfterCreateTable();
+        }
+
+        #endregion
+
     }
 }

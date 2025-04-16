@@ -4,7 +4,7 @@
     <TargetFramework>net8.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
-    <Version>1.0.3</Version>
+    <Version>1.0.4</Version>
     <Title>xy Db PostgreSQL Implement</Title>
     <Description>xy Db PostgreSQL Implement</Description>
     <Authors>dooacontrol</Authors>
@@ -29,7 +29,7 @@
 
   <ItemGroup>
     <PackageReference Include="Npgsql.FSharp" Version="8.0.0" />
-    <PackageReference Include="xy.Db" Version="1.0.3" />
+    <PackageReference Include="xy.Db" Version="1.0.4" />
   </ItemGroup>
 
 </Project>

@@ -132,6 +132,21 @@ namespace xy.Db.SQLite64
 
             return ds;
         }
+
+
+        #region Called by the client to determine how to build script
+
+        public bool createForeignKeyWhenCreateTable()
+        {
+            return true;
+        }
+        public bool createForeignKeyAfterCreateTable()
+        {
+            return false;
+        }
+
+        #endregion
+
         #endregion
 
     }

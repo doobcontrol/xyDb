@@ -21,5 +21,12 @@ namespace xy.Db
         void RollbackTrans();
         Task exeSql(string strSql);
         Task<DataSet> exeSqlForDataSet(string QueryString);
+
+        #region Called by the client to determine how to build script
+
+        bool createForeignKeyWhenCreateTable();
+        bool createForeignKeyAfterCreateTable();
+
+        #endregion
     }
 }

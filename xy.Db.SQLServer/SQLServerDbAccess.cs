@@ -144,6 +144,21 @@ namespace xy.Db.SQLServer
 
             return ds;
         }
+
+
+        #region Called by the client to determine how to build script
+
+        public bool createForeignKeyWhenCreateTable()
+        {
+            return false;
+        }
+        public bool createForeignKeyAfterCreateTable()
+        {
+            return true;
+        }
+
+        #endregion
+
         #endregion
     }
 }
