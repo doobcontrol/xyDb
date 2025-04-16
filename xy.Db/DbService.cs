@@ -61,10 +61,10 @@ namespace xy.Db
 
         #region Called by the client to determine how to build script
 
-        bool createForeignKeyWhenCreateTable(){
+        public bool createForeignKeyWhenCreateTable(){
             return db.createForeignKeyWhenCreateTable();
         }
-        bool createForeignKeyAfterCreateTable()
+        public bool createForeignKeyAfterCreateTable()
         {
             return db.createForeignKeyAfterCreateTable();
         }

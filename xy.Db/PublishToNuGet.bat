@@ -4,6 +4,6 @@ set "psCommand=powershell -Command "$pword = read-host 'Enter api-key' -AsSecure
         [System.Runtime.InteropServices.Marshal]::PtrToStringAuto($BSTR)""
 for /f "usebackq delims=" %%p in (`%psCommand%`) do set api-key=%%p
 
-dotnet nuget push bin\Release\xy.Db.1.0.4.nupkg --api-key %api-key% --source https://api.nuget.org/v3/index.json
+dotnet nuget push bin\Release\xy.Db.1.0.5.nupkg --api-key %api-key% --source https://api.nuget.org/v3/index.json
 
 pause
