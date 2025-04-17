@@ -11,6 +11,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Xml.Linq;
 using xy.Db;
+using xy.Db.MySql;
 using xy.Db.PostgreSQL;
 using xy.Db.SQLite64;
 using xy.Db.SQLServer;
@@ -95,6 +96,17 @@ namespace xyDbSample
                             txtdbUser.Text = "sa";
                             txtdbPassword.Text = "123456";
                             txtdbServer.Text = @"localhost\SQLEXPRESS";
+                            break;
+                        case xyCfg.dT_MySql:
+                            showAdminConnParPanel(checkBox1.Checked);
+                            lbdbName.Text = "Database Name";
+                            lbdbUser.Text = "User Name";
+                            lbdbPassword.Text = "Password";
+                            lbdbServer.Text = "Server Name";
+                            txtdbName.Text = "sys";
+                            txtdbUser.Text = "root";
+                            txtdbPassword.Text = "123456";
+                            txtdbServer.Text = @"localhost";
                             break;
                     }
                 }
@@ -181,6 +193,19 @@ namespace xyDbSample
                         break;
                     case xyCfg.dT_SQLServer:
                         dbAccess = new SQLServerDbAccess();
+                        adminPars.Add(DbService.pn_dbServer,
+                            txtdbServer.Text);
+                        dbCreatePars[DbService.pn_dbServer]
+                            = txtdbServer.Text;
+                        adminPars.Add(DbService.pn_dbName,
+                            txtdbName.Text);
+                        adminPars.Add(DbService.pn_dbUser,
+                            txtdbUser.Text);
+                        adminPars.Add(DbService.pn_dbPassword,
+                            txtdbPassword.Text);
+                        break;
+                    case xyCfg.dT_MySql:
+                        dbAccess = new MySqlDbAccess();
                         adminPars.Add(DbService.pn_dbServer,
                             txtdbServer.Text);
                         dbCreatePars[DbService.pn_dbServer]

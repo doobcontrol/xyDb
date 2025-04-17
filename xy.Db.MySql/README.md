@@ -1,17 +1,11 @@
-# xyDb
-Definition of general database operation interface and implementation of specific database operations for each database  
-  
-Currently includes: SQLite64, PostgreSQL, SqlServer, MySql    
-
+# xy Db MySql Implement
+xy.Db is a definition of general database operation interface and implementation of specific database operations for each database, Currently includes: SQLite64, PostgreSQL, SqlServer, MySql  
+This project is a MySql implementation of xy.Db.
 ## Sample
 Please read code details in project xyDbSample.  
 ### Create DbService
-IDbAccess dbAccess = new SQLite64DbAccess();  
-//IDbAccess dbAccess = new PostgreSQLDbAccess();  
-//IDbAccess dbAccess = new SQLServerDbAccess();  
-string ConnectionString = @"Data Source=testDb;";  
-//string ConnectionString = @"Server=localhost;Database=testdb;User Id=testuser;Password=testPassword;";  
-//string ConnectionString = @"Server=localhost\\SQLEXPRESS;uid=testUser;pwd=testPassword;database=testDb;Packet Size=8192;Max Pool Size=1000;Connect Timeout=30;";  
+IDbAccess dbAccess = new MySqlDbAccess();  
+string ConnectionString = @"server=localhost;uid=testUser;pwd=testPassword;database=testDb;";  
 DbService = new DbService(ConnectionString, dbAccess);  
 await DbService.openAsync();  
 ### New record and query
